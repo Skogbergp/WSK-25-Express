@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "dev": "nodemon app.js",
     "url": "git+https://github.com/Skogbergp/WSK-25-Express.git"
   },
   "keywords": [],
