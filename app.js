@@ -19,7 +19,7 @@ app.get('/api/v1/cat', (req, res) => {
     owner: 'John Doe',
     Image: 'https://loremflickr.com/320/240/cat',
   };
-  res.send(cat);
+  res.json(cat);
 });
 
 app.use('/public', express.static('public'));
