@@ -23,7 +23,7 @@ const listAllCats = () => {
 };
 
 const findCatById = (id) => {
-  return catItems.find((item) => item.cat_id == id);
+  return catItems.find((item) => item.cat_id === id);
 };
 
 const addCat = (cat) => {
@@ -40,7 +40,7 @@ const addCat = (cat) => {
   return {cat_id: newId};
 };
 const deleteCat = (id) => {
-  const index = catItems.findIndex((item) => item.cat_id == id);
+  const index = catItems.findIndex((item) => item.cat_id === id);
   if (index !== -1) {
     catItems.splice(index, 1);
     return true;

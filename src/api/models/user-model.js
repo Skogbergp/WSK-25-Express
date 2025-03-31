@@ -55,7 +55,7 @@ const adduser = (user) => {
   return {user_id: newId};
 };
 const deleteuser = (id) => {
-  const index = userItems.findIndex((item) => item.user_id == id);
+  const index = userItems.findIndex((item) => item.user_id === id);
   if (index !== -1) {
     userItems.splice(index, 1);
     return true;
