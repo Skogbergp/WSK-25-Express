@@ -8,19 +8,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Skogbergp/WSK-25-Express-template.git"
+    "dev": "nodemon app.js",
+    "url": "git+https://github.com/Skogbergp/WSK-25-Express.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Skogbergp/WSK-25-Express-template/issues"
+    "url": "https://github.com/Skogbergp/WSK-25-Express/issues"
   },
-  "homepage": "https://github.com/Skogbergp/WSK-25-Express-template#readme",
+  "homepage": "https://github.com/Skogbergp/WSK-25-Express#readme",
   "devDependencies": {
     "@eslint/js": "^9.23.0",
     "eslint": "^9.23.0",
-    "globals": "^16.0.0"
+    "globals": "^16.0.0",
+    "nodemon": "^3.1.9"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
 }
