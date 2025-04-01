@@ -42,17 +42,18 @@ const findUserById = (id) => {
 };
 
 const addUser = (user) => {
-  const {user_name, email, role, password} = user;
+  const {username, email, role, password} = user;
   const newId = userItems[0].user_id + 1;
   userItems.unshift({
     user_id: newId,
-    user_name,
+    username,
     email,
     role,
     password,
   });
   return {user_id: newId};
 };
+
 const deleteUser = (id) => {
   const index = userItems.findIndex((item) => item.user_id === id);
   if (index !== -1) {
