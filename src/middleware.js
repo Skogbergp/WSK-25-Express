@@ -5,10 +5,12 @@ const createThumbnail = async (req, res, next) => {
     next();
     return;
   }
+
+  const ext = req.file.originalname.split('.').pop();
   console.log(req.file.path);
-  sharp(req.file.path)
+  await sharp(req.file.path)
     .resize(160, 160)
-    .toFile(`uploads/${req.file.filename}_thumb`);
+    .toFile(`uploads/${req.file.filename}_thumb.${ext}`);
   next();
   return;
 };

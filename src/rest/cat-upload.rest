@@ -18,3 +18,8 @@ Content-Type: image/jpeg
 
 ### get all cats
 GET http://localhost:3000/api/v1/cats
+
+###
+POST http://localhost:3000/api/v1/cats
+Content-Type: application/json
+
