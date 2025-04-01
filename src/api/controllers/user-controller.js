@@ -1,11 +1,11 @@
-import {adduser, finduserById, listAllusers} from '../models/user-model.js';
+import {addUser, findUserById, listAllUsers} from '../models/user-model.js';
 
-const getuser = (req, res) => {
-  res.json(listAllusers());
+const getUser = (req, res) => {
+  res.json(listAllUsers());
 };
 
-const getuserById = (req, res) => {
-  const user = finduserById(req.params.id);
+const getUserById = (req, res) => {
+  const user = findUserById(req.params.id);
   if (user) {
     res.json(user);
   } else {
@@ -13,8 +13,8 @@ const getuserById = (req, res) => {
   }
 };
 
-const postuser = (req, res) => {
-  const result = adduser(req.body);
+const postUser = (req, res) => {
+  const result = addUser(req.body);
   if (result.user_id) {
     res.status(201);
     res.json({message: 'New user added.', result});
@@ -23,14 +23,14 @@ const postuser = (req, res) => {
   }
 };
 
-const putuser = (req, res) => {
+const putUser = (req, res) => {
   res.status(200);
   res.json({message: 'user updated.', result: req.body});
   res.sendStatus(200);
 };
 
-const deleteuser = (req, res) => {
-  const user = finduserById(req.params.id);
+const deleteUser = (req, res) => {
+  const user = findUserById(req.params.id);
   if (!user) {
     res.sendStatus(404);
     return;
@@ -38,4 +38,4 @@ const deleteuser = (req, res) => {
   res.sendStatus(200);
 };
 
-export {getuser, getuserById, postuser, putuser, deleteuser};
+export {getUser, getUserById, postUser, putUser, deleteUser};

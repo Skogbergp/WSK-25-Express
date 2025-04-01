@@ -33,28 +33,27 @@ const userItems = [
   },
 ];
 
-const listAllusers = () => {
+const listAllUsers = () => {
   return userItems;
 };
 
-const finduserById = (id) => {
+const findUserById = (id) => {
   return userItems.find((item) => item.user_id == id);
 };
 
-const adduser = (user) => {
-  const {user_name, weight, owner, filename, birthdate} = user;
+const addUser = (user) => {
+  const {user_name, email, role, password} = user;
   const newId = userItems[0].user_id + 1;
   userItems.unshift({
     user_id: newId,
     user_name,
-    weight,
-    owner,
-    filename,
-    birthdate,
+    email,
+    role,
+    password,
   });
   return {user_id: newId};
 };
-const deleteuser = (id) => {
+const deleteUser = (id) => {
   const index = userItems.findIndex((item) => item.user_id === id);
   if (index !== -1) {
     userItems.splice(index, 1);
@@ -63,4 +62,4 @@ const deleteuser = (id) => {
   return false;
 };
 
-export {listAllusers, finduserById, adduser, deleteuser};
+export {listAllUsers, findUserById, addUser, deleteUser};
