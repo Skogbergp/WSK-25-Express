@@ -29,16 +29,19 @@ const findCatById = (id) => {
 const addCat = (cat) => {
   console.log(cat);
   const {cat_name, weight, owner, filename, birthdate} = cat;
-  const newId = catItems[0].cat_id + 1;
+  const newId =
+    catItems.length > 0
+      ? Math.max(...catItems.map((item) => item.cat_id)) + 1
+      : 1;
   catItems.push({
     cat_id: newId,
-    cat_name: cat_name,
-    weight: weight,
-    owner: owner,
-    filename: filename,
-    birthdate: birthdate,
+    cat_name,
+    weight,
+    owner,
+    filename,
+    birthdate,
   });
-  console.log(catItems[newId]);
+  console.log('New cat added:', catItems[catItems.length - 1]);
   return {cat_id: newId};
 };
 const deleteCat = (id) => {
