@@ -1,4 +1,21 @@
 import sharp from 'sharp';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config';
+
+const authenticateToken = (req, res, next) => {
+  console.log('authenticateToken', req.headers);
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  console.log('token', token);
+  if (token == null) return res.sendStatus(401);
+  try {
+    res.local.user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    next();
+  } catch (err) {
+    console.log(err);
+    return res.sendStatus(403).send({message: 'Invalid token'});
+  }
+};
 
 const createThumbnail = async (req, res, next) => {
   if (!req.file) {
@@ -15,4 +32,4 @@ const createThumbnail = async (req, res, next) => {
   return;
 };
 
-export {createThumbnail};
+export {authenticateToken, createThumbnail};

@@ -81,4 +81,20 @@ const removeUser = async (id) => {
   }
 };
 
-export {listAllUsers, findUserById, addUser, modifyUser, removeUser};
+const login = async (user) => {
+  try {
+    const sql = `SELECT *
+                FROM wsk_users
+                WHERE username = ?`;
+    const params = [user];
+
+    const [rows] = await promisePool.execute(sql, params);
+
+    return rows[0];
+  } catch (error) {
+    console.error('Error logging in user:', error);
+    return 'Error logging in user';
+  }
+};
+
+export {listAllUsers, findUserById, addUser, modifyUser, removeUser, login};
