@@ -6,6 +6,7 @@ import {
   postCat,
   putCat,
   deleteCat,
+  getCatByOwner,
 } from '../controllers/cat-controller.js';
 import {createThumbnail} from '../../middleware.js';
 
@@ -17,6 +18,8 @@ catRouter
   .route('/')
   .get(getCat)
   .post(upload.single('file'), createThumbnail, postCat);
+
+catRouter.route('/owner/:id').get(getCatByOwner);
 
 catRouter.route('/:id').get(getCatById).put(putCat).delete(deleteCat);
 

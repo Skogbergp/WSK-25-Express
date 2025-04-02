@@ -1,14 +1,16 @@
 import promisePool from '../../utils/database.js';
 
 const listAllCats = async () => {
-  const [rows] = await promisePool.query('SELECT * FROM wsk_cats');
+  const [rows] = await promisePool.query(
+    'SELECT wsk_cats.*,wsk_users.name as "owner" FROM wsk_cats JOIN wsk_users ON wsk_cats.owner = wsk_users.user_id'
+  );
   console.log('rows', rows);
   return rows;
 };
 
 const findCatById = async (id) => {
   const [rows] = await promisePool.execute(
-    'SELECT * FROM cats WHERE cats_id = ?',
+    'SELECT wsk_cats.*, wsk_users.name as "owner" FROM wsk_cats JOIN wsk_users ON wsk_cats.owner = wsk_users.user_id WHERE wsk_cats.cat_id = ?',
     [id]
   );
   console.log('rows', rows);
@@ -20,7 +22,9 @@ const findCatById = async (id) => {
 
 const addCat = async (cat) => {
   try {
-    const {cat_name, weight, owner, filename, birthdate} = cat;
+    const {cat_name, weight, owner, birthdate} = cat;
+    const filename = cat.filename;
+    console.log(cat.filename);
     console.log(cat);
     const sql = `INSERT INTO wsk_cats (cat_name, weight, owner, filename, birthdate)
                VALUES (?, ?, ?, ?, ?)`;
@@ -62,4 +66,22 @@ const removeCat = async (id) => {
   return {message: 'success'};
 };
 
-export {listAllCats, findCatById, addCat, modifyCat, removeCat};
+const findCatByUserId = async (id) => {
+  const [rows] = await promisePool.execute(
+    'SELECT * FROM wsk_cats WHERE owner = ?',
+    [id]
+  );
+  if (rows.length === 0) {
+    return false;
+  }
+  return rows;
+};
+
+export {
+  listAllCats,
+  findCatById,
+  addCat,
+  modifyCat,
+  removeCat,
+  findCatByUserId,
+};
