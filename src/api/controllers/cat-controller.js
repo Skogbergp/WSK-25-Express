@@ -6,7 +6,12 @@ import {
 } from '../models/cat-model.js';
 
 const getCat = async (req, res) => {
-  res.json(await listAllCats());
+  try {
+    res.json(await listAllCats());
+  } catch (error) {
+    console.error('Error in getCat:', error);
+    res.status(500).json({message: 'Internal server error'});
+  }
 };
 
 const getCatById = async (req, res) => {
@@ -19,7 +24,13 @@ const getCatById = async (req, res) => {
 };
 
 const postCat = async (req, res) => {
-  const result = await addCat(req.body, req.file.filename);
+  console.log(req.body);
+  let result;
+  if (req.file) {
+    result = await addCat(req.body, res.file.filename);
+  } else {
+    result = await addCat(req.body);
+  }
   console.log(req.body);
   if (result.cat_id) {
     console.log(req.file);

@@ -3,5 +3,9 @@ Content-Type: application/json
 
 {
     "username": "testuser",
-    "password": "testpassword1"
+    "password": "testpassword"
 }
+
+### Get my user info
+GET http://localhost:3000/api/v1/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0MCwibmFtZSI6InRlc3R1c2VyIiwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImVtYWlsIjoiYSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzQzNTg4OTY3LCJleHAiOjE3NDM2NzUzNjd9.rSJmkBWJQXXz3RtHJNs90yE9TweFum2-yOEUOCarr2s

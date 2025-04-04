@@ -23,9 +23,8 @@ const findCatById = async (id) => {
 const addCat = async (cat) => {
   try {
     const {cat_name, weight, owner, birthdate} = cat;
-    const filename = cat.filename;
-    console.log(cat.filename);
-    console.log(cat);
+    const filename = cat.filename || null;
+
     const sql = `INSERT INTO wsk_cats (cat_name, weight, owner, filename, birthdate)
                VALUES (?, ?, ?, ?, ?)`;
     const params = [cat_name, weight, owner, filename, birthdate];

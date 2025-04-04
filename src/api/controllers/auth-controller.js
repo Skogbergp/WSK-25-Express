@@ -4,9 +4,9 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 
 const getMe = async (req, res) => {
-  console.log('getMe', req.locals.user);
-  if (req.locals.user) {
-    res.json({message: 'token ok', user: req.locals.user});
+  console.log('getMe', res.locals.user);
+  if (res.locals.user) {
+    res.json({message: 'token ok', user: res.locals.user});
   } else {
     res.status(401);
   }
