@@ -3,7 +3,9 @@ import {
   findCatById,
   listAllCats,
   findCatByUserId,
+  modifyCat,
 } from '../models/cat-model.js';
+import {authUser} from './auth-controller.js';
 
 const getCat = async (req, res) => {
   try {
@@ -24,31 +26,40 @@ const getCatById = async (req, res) => {
 };
 
 const postCat = async (req, res) => {
-  console.log(req.body);
-  let result;
-  if (req.file) {
-    result = await addCat(req.body, res.file.filename);
-  } else {
-    result = await addCat(req.body);
-  }
-  console.log(req.body);
-  if (result.cat_id) {
-    console.log(req.file);
-    res.status(201);
-    res.json({message: 'New cat added.', result});
-  } else {
-    res.sendStatus(400);
+  try {
+    const {cat_name, weight, owner, birthdate} = req.body;
+
+    if (!cat_name || !weight || !owner || !birthdate) {
+      return res.status(400).json({message: 'All fields are required'});
+    }
+
+    const filename = req.file ? req.file.filename : null;
+
+    const result = await addCat({cat_name, weight, owner, birthdate, filename});
+
+    if (result.cat_id) {
+      console.log(req.file);
+      res.status(201).json({message: 'New cat added.', result});
+    } else {
+      res.status(400).json({message: 'Failed to add cat.'});
+    }
+  } catch (error) {
+    console.error('Error in postCat:', error);
+    res.status(500).json({message: 'Internal server error'});
   }
 };
 
-const putCat = (req, res) => {
-  res.status(200);
-  res.json({message: 'Cat updated.', result: req.body});
-  res.sendStatus(200);
+const putCat = async (req, res) => {
+  const user = res.locals.user;
+  console.log('user', user);
+  const result = await modifyCat(req.body, user);
+
+  res.json(result);
 };
 
 const deleteCat = async (req, res) => {
-  const cat = await findCatById(req.params.id);
+  const user = res.locals.user;
+  const cat = await findCatById(req.params.id, user.user_id);
   if (!cat) {
     res.sendStatus(404);
     return;

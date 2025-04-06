@@ -2,7 +2,7 @@ import promisePool from '../../utils/database.js';
 
 const listAllUsers = async () => {
   const [rows] = await promisePool.query('SELECT * FROM wsk_users');
-  console.log('rows', rows);
+  // console.log('rows', rows);
   return rows;
 };
 
@@ -19,22 +19,17 @@ const findUserById = async (id) => {
 };
 
 const addUser = async (user) => {
-  try {
-    const {name, username, email, role, password} = user;
-    console.log(user);
-    const sql = `INSERT INTO wsk_users (name, username, email, role, password)
-                 VALUES (?, ?, ?, ?, ?)`;
-    const params = [name, username, email, role, password];
-    const rows = await promisePool.execute(sql, params);
-    console.log('rows', rows);
-    if (rows[0].affectedRows === 0) {
-      return false;
-    }
-    return {user_id: rows[0].insertId};
-  } catch (error) {
-    console.error('Error adding user:', error);
-    return 'Error adding user';
+  const {name, username, password, email} = user;
+  console.log('user', user);
+  const sql = `INSERT INTO wsk_users (name, username, password, email)
+               VALUES (?, ?, ?, ?)`;
+  const params = [name, username, password, email];
+  const rows = await promisePool.execute(sql, params);
+  console.log('rows', rows);
+  if (rows[0].affectedRows === 0) {
+    return false;
   }
+  return {user_id: rows[0].insertId};
 };
 
 const modifyUser = async (user, id) => {
@@ -56,7 +51,7 @@ const removeUser = async (id) => {
   try {
     connection.beginTransaction();
 
-    await connection.execute('DELETE FROM wsk_cats WHERE user_id = ?', [id]);
+    await connection.execute('DELETE FROM wsk_cats WHERE owner = ?', [id]);
 
     const sql = await connection.format(
       'DELETE FROM wsk_users WHERE user_id = ?',

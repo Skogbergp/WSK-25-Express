@@ -22,11 +22,12 @@ const getUserById = async (req, res) => {
 };
 
 const postUser = async (req, res) => {
-  req.body.password = bcrypt.hashSync(req.body.password, 10);
+  console.log('req.body', req.body);
+  req.body.password = bcrypt.hashSync(req.body.passwd, 10);
   const result = await addUser(req.body);
-  console.log(req.body);
   if (result.user_id) {
-    res.status(201).json({message: 'New user added.', result});
+    res.status(201);
+    res.json(result);
   } else {
     res.sendStatus(400);
   }

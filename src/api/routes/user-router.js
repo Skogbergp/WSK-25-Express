@@ -2,9 +2,9 @@ import express from 'express';
 import {
   getUser,
   getUserById,
-  postUser,
   putUser,
   deleteUser,
+  postUser,
 } from '../controllers/user-controller.js';
 
 const userRouter = express.Router();

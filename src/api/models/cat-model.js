@@ -4,7 +4,7 @@ const listAllCats = async () => {
   const [rows] = await promisePool.query(
     'SELECT wsk_cats.*,wsk_users.name as "owner" FROM wsk_cats JOIN wsk_users ON wsk_cats.owner = wsk_users.user_id'
   );
-  console.log('rows', rows);
+  // console.log('rows', rows);
   return rows;
 };
 
@@ -22,12 +22,22 @@ const findCatById = async (id) => {
 
 const addCat = async (cat) => {
   try {
-    const {cat_name, weight, owner, birthdate} = cat;
-    const filename = cat.filename || null;
-
+    const {cat_name, weight, owner, birthdate, filename} = cat;
+    console.log('cat_name:', cat_name);
+    console.log('weight:', weight);
+    console.log('owner:', owner);
+    console.log('birthdate:', birthdate);
+    console.log('filename:', filename);
     const sql = `INSERT INTO wsk_cats (cat_name, weight, owner, filename, birthdate)
-               VALUES (?, ?, ?, ?, ?)`;
-    const params = [cat_name, weight, owner, filename, birthdate];
+                 VALUES (?, ?, ?, ?, ?)`;
+    const params = [
+      cat_name,
+      weight,
+      owner,
+      filename || null, // Use null if filename is undefined
+      birthdate,
+    ];
+
     const rows = await promisePool.execute(sql, params);
     console.log('rows', rows);
     if (rows[0].affectedRows === 0) {
@@ -40,23 +50,39 @@ const addCat = async (cat) => {
   }
 };
 
-const modifyCat = async (cat, id) => {
-  const sql = promisePool.format(`UPDATE WSK_cats SET ? WHERE cat_id = ?`, [
-    cat,
-    id,
-  ]);
+const modifyCat = async (cat, user) => {
+  console.log('cat', cat);
+  console.log('user', user);
+
+  const newCat = {
+    cat_name: cat.updated_cat_name,
+    weight: cat.weight,
+    filename: cat.filename || '',
+    birthdate: cat.birthdate,
+  };
+  const id = user.user_id;
+  const sql = promisePool.format(
+    `UPDATE wsk_cats SET ? WHERE cat_name = ? AND owner = ?`,
+    [newCat, cat.cat_name, id]
+  );
+
+  console.log('SQL Query:', sql);
+  console.log('cat:', cat);
+  console.log('cat.cat_name:', cat.cat_name);
+  console.log('user.user_id:', id);
+
   const rows = await promisePool.execute(sql);
   console.log('rows', rows);
   if (rows[0].affectedRows === 0) {
-    return false;
+    return {message: 'Cat not found or not updated'};
   }
-  return {message: 'success'};
+  return {message: 'cat updated'};
 };
 
-const removeCat = async (id) => {
+const removeCat = async (id, user_id) => {
   const [rows] = await promisePool.execute(
-    'DELETE FROM wsk_rcats WHERE cat_id = ?',
-    [id]
+    'DELETE FROM wsk_rcats WHERE cat_id = ? AND owner = ?',
+    [id, user_id]
   );
   console.log('rows', rows);
   if (rows.affectedRows === 0) {

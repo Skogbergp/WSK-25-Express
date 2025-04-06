@@ -8,6 +8,7 @@ import {
   deleteCat,
   getCatByOwner,
 } from '../controllers/cat-controller.js';
+import {authenticateToken} from '../../middleware.js';
 import {createThumbnail} from '../../middleware.js';
 
 const catRouter = express.Router();
@@ -21,6 +22,10 @@ catRouter
 
 catRouter.route('/owner/:id').get(getCatByOwner);
 
-catRouter.route('/:id').get(getCatById).put(putCat).delete(deleteCat);
+catRouter
+  .route('/:id')
+  .get(getCatById)
+  .put(authenticateToken, putCat)
+  .delete(authenticateToken, deleteCat);
 
 export default catRouter;
